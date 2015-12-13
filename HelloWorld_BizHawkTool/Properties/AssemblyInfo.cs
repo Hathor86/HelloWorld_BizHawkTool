@@ -1,6 +1,8 @@
-﻿using System.Reflection;
+﻿using System.Drawing;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using BizHawk.Client.ApiHawk;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -13,6 +15,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+
+//As you can see this is a dedicated attribute. You can write the name of your tool, a small description
+//and give an icon. The icon should be compiled as an embedded resource and you must give the entire path
+[assembly: BizHawkExternalTool("Hello World", "My first External tool for BizHawk emulator", "icon_Hello.ico")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

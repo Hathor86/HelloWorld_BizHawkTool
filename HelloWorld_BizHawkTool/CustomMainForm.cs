@@ -16,7 +16,7 @@ namespace BizHawk.Client.EmuHawk
 	/// /!\ it MUST be called CustomMainForm and implements IExternalToolForm
 	/// Take also care of the namespace
 	/// </summary>
-	public partial class CustomMainForm : Form , IExternalToolForm
+	public partial class CustomMainForm : Form, IExternalToolForm
 	{
 		#region Fields
 
@@ -67,7 +67,7 @@ namespace BizHawk.Client.EmuHawk
 		/// when emulator is runnig in turbo mode
 		/// </summary>
 		public void FastUpdate()
-		{}		
+		{ }
 
 		/// <summary>
 		/// Restart is called the first time you call the form
@@ -75,28 +75,35 @@ namespace BizHawk.Client.EmuHawk
 		/// </summary>
 		public void Restart()
 		{
-			//first initialization of WatchList
-			if (_watches == null)
-			{
-				_watches = new WatchList(_memoryDomains, _emu.SystemId ?? string.Empty);
+			if (Global.Game.Name != "Null")
+			{				
+				//first initialization of WatchList
+				if (_watches == null)
+				{
+					_watches = new WatchList(_memoryDomains, _emu.SystemId ?? string.Empty);
 
-				//Create some watch
-				Watch myFirstWatch = Watch.GenerateWatch(_memoryDomains.MainMemory, 0x40, WatchSize.Byte, BizHawk.Client.Common.DisplayType.Hex, true);
-				Watch mySecondWatch = Watch.GenerateWatch(_memoryDomains.MainMemory, 0x50, WatchSize.Word, BizHawk.Client.Common.DisplayType.Unsigned, true);
-				Watch myThirdWatch = Watch.GenerateWatch(_memoryDomains.MainMemory, 0x60, WatchSize.DWord, BizHawk.Client.Common.DisplayType.Hex, true);
+					//Create some watch
+					Watch myFirstWatch = Watch.GenerateWatch(_memoryDomains.MainMemory, 0x40, WatchSize.Byte, BizHawk.Client.Common.DisplayType.Hex, true);
+					Watch mySecondWatch = Watch.GenerateWatch(_memoryDomains.MainMemory, 0x50, WatchSize.Word, BizHawk.Client.Common.DisplayType.Unsigned, true);
+					Watch myThirdWatch = Watch.GenerateWatch(_memoryDomains.MainMemory, 0x60, WatchSize.DWord, BizHawk.Client.Common.DisplayType.Hex, true);
 
-				//add them into the list
-				_watches.Add(myFirstWatch);
-				_watches.Add(mySecondWatch);
-				_watches.Add(myThirdWatch);
+					//add them into the list
+					_watches.Add(myFirstWatch);
+					_watches.Add(mySecondWatch);
+					_watches.Add(myThirdWatch);
 
-				label_Game.Text = string.Format("You're playing {0}", Global.Game.Name);
+					label_Game.Text = string.Format("You're playing {0}", Global.Game.Name);
+				}
+				//refresh it
+				else
+				{
+					_watches.RefreshDomains(_memoryDomains);
+					label_Game.Text = string.Format("You're playing {0}", Global.Game.Name);
+				}
 			}
-			//refresh it
 			else
 			{
-				_watches.RefreshDomains(_memoryDomains);
-				label_Game.Text = string.Format("You're playing {0}", Global.Game.Name);
+				label_Game.Text = string.Format("You aren't playing to anything");
 			}
 		}
 
@@ -106,11 +113,14 @@ namespace BizHawk.Client.EmuHawk
 		/// </summary>
 		public void UpdateValues()
 		{
-			//we update our watches
-			_watches.UpdateValues();
-			label_Watch1.Text = string.Format("First watch ({0}) current value: {1}", _watches[0].AddressString, _watches[0].ValueString);
-			label_Watch2.Text = string.Format("Second watch ({0}) current value: {1}", _watches[1].AddressString, _watches[1].ValueString);
-			label_Watch3.Text = string.Format("Third watch ({0}) current value: {1}", _watches[2].AddressString, _watches[2].ValueString);
+			if (Global.Game.Name != "Null")
+			{
+				//we update our watches
+				_watches.UpdateValues();
+				label_Watch1.Text = string.Format("First watch ({0}) current value: {1}", _watches[0].AddressString, _watches[0].ValueString);
+				label_Watch2.Text = string.Format("Second watch ({0}) current value: {1}", _watches[1].AddressString, _watches[1].ValueString);
+				label_Watch3.Text = string.Format("Third watch ({0}) current value: {1}", _watches[2].AddressString, _watches[2].ValueString);
+			}
 		}
 
 		#endregion BizHawk Required methods
