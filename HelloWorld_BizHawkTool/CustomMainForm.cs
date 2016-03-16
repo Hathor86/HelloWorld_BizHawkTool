@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using BizHawk.Client.ApiHawk;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -75,6 +76,9 @@ namespace BizHawk.Client.EmuHawk
 		/// </summary>
 		public void Restart()
 		{
+			//set a client padding
+			ClientApi.SetExtraPadding(50, 50);
+
 			if (Global.Game.Name != "Null")
 			{				
 				//first initialization of WatchList
