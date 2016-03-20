@@ -44,6 +44,15 @@ namespace BizHawk.Client.EmuHawk
 
 		#endregion
 
+		#region Methods
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			//ClientApi.DoframeAdvance();
+		}
+
+		#endregion
+
 		#region BizHawk Required methods
 
 		/// <summary>
@@ -97,17 +106,20 @@ namespace BizHawk.Client.EmuHawk
 					_watches.Add(myThirdWatch);
 
 					label_Game.Text = string.Format("You're playing {0}", Global.Game.Name);
+					label_GameHash.Text = string.Format("Hash: {0}", Global.Game.Hash);
 				}
 				//refresh it
 				else
 				{
 					_watches.RefreshDomains(_memoryDomains);
 					label_Game.Text = string.Format("You're playing {0}", Global.Game.Name);
+					label_GameHash.Text = string.Format("Hash: {0}", Global.Game.Hash);
 				}
 			}
 			else
 			{
 				label_Game.Text = string.Format("You aren't playing to anything");
+				label_GameHash.Text = string.Empty;
 			}
 		}
 

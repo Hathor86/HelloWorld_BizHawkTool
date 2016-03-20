@@ -22,7 +22,7 @@ using BizHawk.Client.ApiHawk;
 
 //This attribute say what the is for. here, I don't anything
 //It's equivalent to [assembly: BizHawkExternalToolUsage(BizHawkExternalToolUsage.Global, string.Empty)]
-//Here is an example for an emulator specific: BizHawkExternalToolUsage(BizHawkExternalToolUsage.EmulatorSpecific, "NES")]
+//Here is an example for an emulator specific: BizHawkExternalToolUsage(BizHawkExternalToolUsage.EmulatorSpecific, EmulatedSystem.NES)]
 //Here is an example for an game specific: BizHawkExternalToolUsage(BizHawkExternalToolUsage.GameSpecific, "6B47BB75D16514B6A476AA0C73A683A2A4C18765")] => Super Mario World (USA)
 //By setting this, your tool is contextualized, that mean you can't load it if emulator is in state you don't want
 //It avoid crash
