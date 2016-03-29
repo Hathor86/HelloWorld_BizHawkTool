@@ -40,6 +40,7 @@ namespace BizHawk.Client.EmuHawk
 		public CustomMainForm()
 		{
 			InitializeComponent();
+			label_GameHash.Click += Label_GameHash_Click;
 		}
 
 		#endregion
@@ -48,7 +49,17 @@ namespace BizHawk.Client.EmuHawk
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			//ClientApi.DoframeAdvance();
+			ClientApi.DoFrameAdvance();
+		}
+
+		private void button2_Click(object sender, EventArgs e)
+		{
+			ClientApi.GetInput(1);
+		}
+
+		private void Label_GameHash_Click(object sender, EventArgs e)
+		{
+			Clipboard.SetText(Global.Game.Hash);
 		}
 
 		#endregion
@@ -137,8 +148,19 @@ namespace BizHawk.Client.EmuHawk
 				label_Watch2.Text = string.Format("Second watch ({0}) current value: {1}", _watches[1].AddressString, _watches[1].ValueString);
 				label_Watch3.Text = string.Format("Third watch ({0}) current value: {1}", _watches[2].AddressString, _watches[2].ValueString);
 			}
+
+			if(Global.Emulator.Frame % 60 == 0 && loopAButton.CheckState == CheckState.Checked)
+			{
+				Joypad j = ClientApi.GetInput(1);
+				j.AddInput(JoypadButton.A);
+				ClientApi.SetInput(1, j);
+				//ClientApi.DoFrameAdvanceAndUnpause();
+				//j.ClearInputs();
+				//ClientApi.SetInput(1, j);
+				//ClientApi.DoFrameAdvanceAndUnpause();
+			}
 		}
 
-		#endregion BizHawk Required methods
+		#endregion BizHawk Required methods		
 	}
 }
