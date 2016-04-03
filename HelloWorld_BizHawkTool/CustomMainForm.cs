@@ -57,6 +57,26 @@ namespace BizHawk.Client.EmuHawk
 			ClientApi.GetInput(1);
 		}
 
+		private void button3_Click(object sender, EventArgs e)
+		{
+			for (int i = 0; i < 600; i++)
+			{
+				if(i % 60 == 0)
+				{
+					Joypad j = ClientApi.GetInput(1);
+					j.AddInput(JoypadButton.A);
+					ClientApi.SetInput(1, j);
+
+					ClientApi.DoFrameAdvance();
+
+					j.RemoveInput(JoypadButton.A);
+					ClientApi.SetInput(1, j);
+					ClientApi.DoFrameAdvance();
+				}
+				ClientApi.DoFrameAdvance();
+			}
+		}
+
 		private void Label_GameHash_Click(object sender, EventArgs e)
 		{
 			Clipboard.SetText(Global.Game.Hash);
@@ -100,7 +120,7 @@ namespace BizHawk.Client.EmuHawk
 			ClientApi.SetExtraPadding(50, 50);
 
 			if (Global.Game.Name != "Null")
-			{				
+			{
 				//first initialization of WatchList
 				if (_watches == null)
 				{
@@ -147,17 +167,6 @@ namespace BizHawk.Client.EmuHawk
 				label_Watch1.Text = string.Format("First watch ({0}) current value: {1}", _watches[0].AddressString, _watches[0].ValueString);
 				label_Watch2.Text = string.Format("Second watch ({0}) current value: {1}", _watches[1].AddressString, _watches[1].ValueString);
 				label_Watch3.Text = string.Format("Third watch ({0}) current value: {1}", _watches[2].AddressString, _watches[2].ValueString);
-			}
-
-			if(Global.Emulator.Frame % 60 == 0 && loopAButton.CheckState == CheckState.Checked)
-			{
-				Joypad j = ClientApi.GetInput(1);
-				j.AddInput(JoypadButton.A);
-				ClientApi.SetInput(1, j);
-				//ClientApi.DoFrameAdvanceAndUnpause();
-				//j.ClearInputs();
-				//ClientApi.SetInput(1, j);
-				//ClientApi.DoFrameAdvanceAndUnpause();
 			}
 		}
 
