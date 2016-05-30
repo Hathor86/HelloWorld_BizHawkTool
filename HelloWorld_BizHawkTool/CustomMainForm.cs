@@ -1,14 +1,11 @@
-﻿using BizHawk.Client.Common;
-using BizHawk.Emulation.Common;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Windows.Forms;
+using System.IO;
+
 using BizHawk.Client.ApiHawk;
+using BizHawk.Client.Common;
+using BizHawk.Emulation.Common;
+using BizHawk.Client.ApiHawk.Classes.Events;
 
 namespace BizHawk.Client.EmuHawk
 {
@@ -41,6 +38,9 @@ namespace BizHawk.Client.EmuHawk
 		{
 			InitializeComponent();
 			label_GameHash.Click += Label_GameHash_Click;
+
+			ClientApi.BeforeQuickSave += ClientApi_BeforeQuickSave;
+			ClientApi.BeforeQuickLoad += ClientApi_BeforeQuickLoad;		
 		}
 
 		#endregion
@@ -61,25 +61,76 @@ namespace BizHawk.Client.EmuHawk
 		{
 			for (int i = 0; i < 600; i++)
 			{
-				if(i % 60 == 0)
+				if (i % 60 == 0)
 				{
-					Joypad j = ClientApi.GetInput(1);
-					j.AddInput(JoypadButton.A);
-					ClientApi.SetInput(1, j);
+					Joypad j1 = ClientApi.GetInput(1);
+					j1.AddInput(JoypadButton.A);
+					ClientApi.SetInput(1, j1);
 
 					ClientApi.DoFrameAdvance();
 
-					j.RemoveInput(JoypadButton.A);
-					ClientApi.SetInput(1, j);
+					j1.RemoveInput(JoypadButton.A);
+					ClientApi.SetInput(1, j1);
 					ClientApi.DoFrameAdvance();
 				}
 				ClientApi.DoFrameAdvance();
 			}
+			Joypad j = ClientApi.GetInput(1);
+			j.ClearInputs();
+			ClientApi.SetInput(1, j);
 		}
 
 		private void Label_GameHash_Click(object sender, EventArgs e)
 		{
 			Clipboard.SetText(Global.Game.Hash);
+		}
+
+		private void loadstate_Click(object sender, EventArgs e)
+		{
+			if (savestateName.Text.Trim() != string.Empty)
+			{
+				ClientApi.LoadState(savestateName.Text);
+				//BinaryStateLoader.LoadAndDetect(savestateName.Text + ".State").GetLump(BinaryStateLump.Framebuffer, false, Test);
+			}
+		}
+
+		/*private void Test(BinaryReader r)
+		{
+			System.Drawing.Bitmap b = new System.Drawing.Bitmap(r.BaseStream);
+		}*/
+
+		private void saveState_Click(object sender, EventArgs e)
+		{			
+			if (savestateName.Text.Trim() != string.Empty)
+			{
+				ClientApi.SaveState(savestateName.Text);
+			}
+		}
+
+		//We will override F10 quicksave behavior
+		private void ClientApi_BeforeQuickSave(object sender, BeforeQuickSaveEventArgs e)
+		{
+			if(e.Slot == 0)
+			{
+				string basePath = Path.Combine(PathManager.GetSaveStatePath(Global.Game), "Test");
+				if (!Directory.Exists(basePath))
+				{
+					Directory.CreateDirectory(basePath);
+				}
+				ClientApi.SaveState(Path.Combine(basePath, e.Name));
+				e.Handled = true;
+			}
+		}
+
+		//We will override F10 quickload behavior
+		private void ClientApi_BeforeQuickLoad(object sender, BeforeQuickLoadEventArgs e)
+		{
+			if (e.Slot == 0)
+			{
+				string basePath = Path.Combine(PathManager.GetSaveStatePath(Global.Game), "Test");
+				ClientApi.LoadState(Path.Combine(basePath, e.Name));
+				e.Handled = true;
+			}
 		}
 
 		#endregion
@@ -170,6 +221,6 @@ namespace BizHawk.Client.EmuHawk
 			}
 		}
 
-		#endregion BizHawk Required methods		
+		#endregion BizHawk Required methods
 	}
 }

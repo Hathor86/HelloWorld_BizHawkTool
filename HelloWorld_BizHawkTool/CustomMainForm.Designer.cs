@@ -36,6 +36,10 @@
 			this.label_GameHash = new System.Windows.Forms.Label();
 			this.button2 = new System.Windows.Forms.Button();
 			this.button3 = new System.Windows.Forms.Button();
+			this.savestateLabel = new System.Windows.Forms.Label();
+			this.savestateName = new System.Windows.Forms.TextBox();
+			this.saveState = new System.Windows.Forms.Button();
+			this.loadstate = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// label_Watch1
@@ -113,11 +117,51 @@
 			this.button3.UseVisualStyleBackColor = true;
 			this.button3.Click += new System.EventHandler(this.button3_Click);
 			// 
+			// savestateLabel
+			// 
+			this.savestateLabel.AutoSize = true;
+			this.savestateLabel.Location = new System.Drawing.Point(12, 119);
+			this.savestateLabel.Name = "savestateLabel";
+			this.savestateLabel.Size = new System.Drawing.Size(87, 13);
+			this.savestateLabel.TabIndex = 8;
+			this.savestateLabel.Text = "Savestate name:";
+			// 
+			// savestateName
+			// 
+			this.savestateName.Location = new System.Drawing.Point(106, 116);
+			this.savestateName.Name = "savestateName";
+			this.savestateName.Size = new System.Drawing.Size(75, 20);
+			this.savestateName.TabIndex = 9;
+			// 
+			// saveState
+			// 
+			this.saveState.Location = new System.Drawing.Point(187, 114);
+			this.saveState.Name = "saveState";
+			this.saveState.Size = new System.Drawing.Size(44, 23);
+			this.saveState.TabIndex = 10;
+			this.saveState.Text = "Save";
+			this.saveState.UseVisualStyleBackColor = true;
+			this.saveState.Click += new System.EventHandler(this.saveState_Click);
+			// 
+			// loadstate
+			// 
+			this.loadstate.Location = new System.Drawing.Point(237, 114);
+			this.loadstate.Name = "loadstate";
+			this.loadstate.Size = new System.Drawing.Size(46, 23);
+			this.loadstate.TabIndex = 11;
+			this.loadstate.Text = "Load";
+			this.loadstate.UseVisualStyleBackColor = true;
+			this.loadstate.Click += new System.EventHandler(this.loadstate_Click);
+			// 
 			// CustomMainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(284, 261);
+			this.Controls.Add(this.loadstate);
+			this.Controls.Add(this.saveState);
+			this.Controls.Add(this.savestateName);
+			this.Controls.Add(this.savestateLabel);
 			this.Controls.Add(this.button3);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.label_GameHash);
@@ -143,5 +187,9 @@
 		private System.Windows.Forms.Label label_GameHash;
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.Button button3;
+		private System.Windows.Forms.Label savestateLabel;
+		private System.Windows.Forms.TextBox savestateName;
+		private System.Windows.Forms.Button saveState;
+		private System.Windows.Forms.Button loadstate;
 	}
 }
